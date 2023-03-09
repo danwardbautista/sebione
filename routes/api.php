@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CompanyAPI\CompanyController;
+use App\Http\Controllers\CompanyAPI\EmployeesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +25,9 @@ Route::post('/company', [CompanyController::class, 'store']);
 Route::get('/company/{id}', [CompanyController::class, 'show']);
 Route::put('/company/{id}', [CompanyController::class, 'update']);
 Route::delete('/company/{id}', [CompanyController::class, 'destroy']);
+
+Route::get('/employee', [EmployeesController::class, 'index']);
+Route::post('/employee', [EmployeesController::class, 'store']);
+Route::get('/employee/{id}', [EmployeesController::class, 'show']);
+Route::put('/employee/{id}', [EmployeesController::class, 'update']);
+Route::delete('/employee/{id}', [EmployeesController::class, 'destroy']);
