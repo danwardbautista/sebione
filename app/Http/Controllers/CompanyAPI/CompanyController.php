@@ -189,4 +189,11 @@ class CompanyController extends Controller
         ], $status_code);
     }
 
+    public function fileLogoImage($fileName){
+        $path = public_path('storage').'/companyLogo/'.$fileName;
+        // return Response::display($path);        
+
+        return response()->file($path);
+    }
+
 }

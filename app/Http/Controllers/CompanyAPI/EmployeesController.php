@@ -12,7 +12,9 @@ class EmployeesController extends Controller
     //
     public function index()
     {
-        $employees = Employees::get();
+        $employees = Employees::Join('companies','companies.id', '=', 'FK_employees_companies')
+        ->select('employees.*','companies.name')
+        ->get();
 
         $status_code = 200;
 
