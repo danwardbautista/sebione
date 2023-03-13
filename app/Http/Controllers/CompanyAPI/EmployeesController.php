@@ -33,7 +33,7 @@ class EmployeesController extends Controller
             'last_name' => 'required',
             'FK_employees_companies' => 'required|exists:companies,id',
             'email' => 'nullable|email|unique:employees',
-            'phone' => 'nullable|regex:(^(09)\\d{9})|unique:employees'
+            'phone' => 'nullable|regex:(^09\d{9}$)|unique:employees'
         ];
         $validator = Validator::make($request->all(), $rules, $messages= [
             'FK_employees_companies.exists' => 'Company does not exist on the database.',
