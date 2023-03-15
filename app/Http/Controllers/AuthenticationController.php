@@ -29,7 +29,7 @@ class AuthenticationController extends Controller
                 'message' => 'Login error!',
                 'status' => 'UNAUTHORIZED',
                 'status_code' => 401,
-            ]);
+            ],401);
         }
 
         $user = User::where('email', $request->email)->first();

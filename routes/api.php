@@ -22,13 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
-    
-
-
-    Route::get('/getuser', [AuthenticationController::class, 'getuser']);
-    Route::post('/logout', [AuthenticationController::class, 'logout']);
-});
-
     //COMPANY API
     Route::get('/company', [CompanyController::class, 'index']);
     Route::post('/company', [CompanyController::class, 'store']);
@@ -42,6 +35,14 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
     Route::get('/employee/{id}', [EmployeesController::class, 'show']);
     Route::put('/employee/{id}', [EmployeesController::class, 'update']);
     Route::delete('/employee/{id}', [EmployeesController::class, 'destroy']);
+
+    Route::get('/dashboardInfo', [CompanyController::class, 'dashboardInfo']);
+
+    Route::get('/getuser', [AuthenticationController::class, 'getuser']);
+    Route::get('/logout', [AuthenticationController::class, 'logout']);
+});
+
+
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::get('/companylogo/{filename}', [CompanyController::class, 'fileLogoImage']);

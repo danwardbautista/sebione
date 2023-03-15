@@ -3,12 +3,31 @@
 namespace App\Http\Controllers\CompanyAPI;
 
 use App\Http\Controllers\Controller;
+use App\Mail\CompanyRegistered;
 use App\Models\Companies;
+use App\Models\Employees;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class CompanyController extends Controller
 {
+    public function dashboardInfo()
+    {
+        $companies = Companies::count();
+        $employees = Employees::count();
+
+        $status_code = 200;
+
+        return response([
+            'message' => "Dashboard info displayed successfully",
+            'status' => 'OK',
+            'status_code' => $status_code,
+            'companies_count' => $companies,
+            'employees_count' => $employees,
+        ], $status_code);
+    }
+
     //READ ALL COMPANY
     public function index()
     {
@@ -32,9 +51,8 @@ class CompanyController extends Controller
             'email' => 'nullable|email|unique:companies',
             'logo' => 'nullable|mimes:jpeg,jpg,png|dimensions:min_width=100,min_height=100',
             'website' => 'nullable|url',
-        ]
-        ;
-        $validator = Validator::make($request->all(), $rules, $messages= [
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages = [
             'logo.dimensions' => 'Minimum company logo size is 100x100.',
         ]);
         if ($validator->fails()) {
@@ -58,8 +76,19 @@ class CompanyController extends Controller
             $results = $companies->save();
         }
 
+        if ($request->email) {
+            try {
+                Mail::to($request->email)->send(new CompanyRegistered($request->email, $request->name));
+            } catch (\Exception $e) {
+                return response([
+                    'message' => 'Email was not sent. An error occured.',
+
+                ], 400);
+            }
+        }
+
         return response([
-            'message' => "Company created successfully", 
+            'message' => "Company created successfully",
             'status' => 'CREATED',
             'status_code' => $status_code,
             'results' => $companies
@@ -118,9 +147,8 @@ class CompanyController extends Controller
             'email' => 'nullable|email|unique:companies,email,' . $companies->id,
             'logo' => 'nullable|mimes:jpeg,jpg,png|dimensions:min_width=100,min_height=100',
             'website' => 'nullable|url',
-        ]
-        ;
-        $validator = Validator::make($request->all(), $rules, $messages= [
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages = [
             'logo.dimensions' => 'Minimum company logo size is 100x100.',
         ]);
         if ($validator->fails()) {
@@ -150,7 +178,7 @@ class CompanyController extends Controller
         $status_code = 200;
 
         return response([
-            'message' => "Company updated successfully", 
+            'message' => "Company updated successfully",
             'status' => 'OK',
             'status_code' => $status_code,
             'results' => $companies
@@ -182,18 +210,18 @@ class CompanyController extends Controller
         $status_code = 200;
 
         return response([
-            'message' => "Company deleted successfully", 
+            'message' => "Company deleted successfully",
             'status' => 'OK',
             'status_code' => $status_code,
             'results' => $companies
         ], $status_code);
     }
 
-    public function fileLogoImage($fileName){
-        $path = public_path('storage').'/companyLogo/'.$fileName;
+    public function fileLogoImage($fileName)
+    {
+        $path = public_path('storage') . '/companyLogo/' . $fileName;
         // return Response::display($path);        
 
         return response()->file($path);
     }
-
 }
