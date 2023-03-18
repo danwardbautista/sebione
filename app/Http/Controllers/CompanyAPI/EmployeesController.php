@@ -26,6 +26,22 @@ class EmployeesController extends Controller
         ], $status_code);
     }
 
+    public function employeesNoCompany()
+    {
+        $employees = Employees::Where('FK_employees_companies', '=', null)
+        ->get();
+
+        $status_code = 200;
+
+        return response([
+            'message' => "Employees without company displayed successfully",
+            'status' => 'OK',
+            'status_code' => $status_code,
+            'results' => $employees
+        ], $status_code);
+    }
+
+
     public function store(Request $request)
     {
         $rules = [

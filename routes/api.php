@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
 
     //EMPLOYEE API
     Route::get('/employee', [EmployeesController::class, 'index']);
+    Route::get('/employeesNoCompany', [EmployeesController::class, 'employeesNoCompany']);
     Route::post('/employee', [EmployeesController::class, 'store']);
     Route::get('/employee/{id}', [EmployeesController::class, 'show']);
     Route::put('/employee/{id}', [EmployeesController::class, 'update']);

@@ -22,7 +22,8 @@ return new class extends Migration
         });
 
         Schema::table('employees', function(Blueprint $table) {
-            $table->foreign('FK_employees_companies')->references('id')->on('companies')->onDelete('set null');
+            // $table->foreign('FK_employees_companies')->references('id')->on('companies')->onDelete('set null');
+            $table->foreign('FK_employees_companies')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 
