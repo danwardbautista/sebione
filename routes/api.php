@@ -44,6 +44,6 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
 });
 
 
-
+Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::get('/companylogo/{filename}', [CompanyController::class, 'fileLogoImage']);
